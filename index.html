@@ -1,0 +1,57 @@
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+    </head>
+    <body>
+        <!-- freddy -->
+        <img src='title screen/freddy/glitch1.png' id='freddy' width='100%' height='100%' style='position: absolute; top: 0%; left: 0%'>
+        <!-- static -->
+        <img src='title screen/static.gif' id='static' width='100%' height='100%' style='position: absolute; top: 0%; left: 0%'>
+        <!-- logo -->
+        <img src='title screen/logo.png' width='15%' height='40%' style='position: absolute; top: 10%; left: 5%;'>
+        <!-- playGame -->
+        <img src='title screen/playGame.png' id='playGame' onclick='window.location.href = "nightshift.html"' onmouseover='static(); arrows(true)' onmouseout='arrows(false)' width='13%' height='5%' style='position: absolute; top: 73%; left: 5%;'>
+        <!-- arrows -->
+        <img src='title screen/arrows.png' id='arrows' width='3%' height='3%' style='position: absolute; top: 73.5%; left: 20%;'>
+        <!-- script -->
+        <script>
+            // variable
+            bear = 0;
+            // freddy
+            function freddy(){
+                // bear
+                bear = Math.floor(Math.random() * 4);
+                if (bear <= 0){
+                    document.getElementById('freddy').src = 'title screen/freddy/glitch1.png';
+                } else if (bear == 1){
+                    document.getElementById('freddy').src = 'title screen/freddy/glitch2.png';
+                } else if (bear == 2){
+                    document.getElementById('freddy').src = 'title screen/freddy/glitch3.png';
+                } else if (bear == 3){
+                    document.getElementById('freddy').src = 'title screen/freddy/glitch4.png';
+                }
+                // setTimeout
+                setTimeout(freddy, 100);
+            }
+            // static
+            function static(){
+                document.getElementById('static').style.opacity = '1';
+                if (document.getElementById('static').style.opacity = '1'){
+                    setTimeout(function(){document.getElementById('static').style.opacity = '0.3';}, 500);
+                }
+            }
+            // arrows
+            function arrows(onOff){
+                if (onOff == true){
+                    document.getElementById('arrows').style.visibility = 'visible';
+                } else if (onOff == false){
+                    document.getElementById('arrows').style.visibility = 'hidden';
+                }
+            }
+            // function
+            freddy();
+            static();
+            arrows(false);
+        </script>
+</html>
