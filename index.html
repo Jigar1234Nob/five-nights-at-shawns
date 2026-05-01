@@ -8,22 +8,34 @@
 
 *{margin:0;padding:0;box-sizing:border-box;}
 
-body{
+html,body{
+  width:100%;height:100%;
   background:#000;
   font-family:'Share Tech Mono','Courier New',monospace;
   overflow:hidden;
-  width:100%;height:500px;
+}
+
+body{
+  display:flex;align-items:center;justify-content:center;
+  min-height:500px;
+}
+
+#scene{
+  width:700px;
+  height:500px;
   position:relative;
+  flex-shrink:0;
+  transform-origin:center center;
 }
 
 #bg{
   position:absolute;inset:0;
-  background:radial-gradient(ellipse at 50% 60%, #1a0000 0%, #000 80%);
+  background:radial-gradient(ellipse at 50% 55%, #200000 0%, #000 75%);
 }
 
 #scanlines{
   position:absolute;inset:0;
-  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.28) 3px,rgba(0,0,0,0.28) 4px);
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.25) 3px,rgba(0,0,0,0.25) 4px);
   pointer-events:none;z-index:50;
 }
 
@@ -36,21 +48,15 @@ body{
 
 #vignette{
   position:absolute;inset:0;
-  background:radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(0,0,0,0.92) 100%);
+  background:radial-gradient(ellipse at 50% 50%, transparent 25%, rgba(0,0,0,0.9) 100%);
   pointer-events:none;z-index:48;
 }
 
 #glitch-bar{
   position:absolute;height:2px;
-  background:rgba(180,0,0,0.6);
+  background:rgba(200,0,0,0.55);
   left:0;width:100%;z-index:200;
   pointer-events:none;opacity:0;
-}
-
-#content{
-  position:relative;z-index:100;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  height:500px;gap:0;
 }
 
 #eyeCanvas{
@@ -58,45 +64,55 @@ body{
   z-index:5;pointer-events:none;
 }
 
+#content{
+  position:absolute;inset:0;z-index:100;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:0;
+  padding:2rem;
+}
+
+/* LOGO */
 .logo-block{
-  text-align:center;margin-bottom:2.5rem;
-  animation:logoFlicker 6s infinite;
+  text-align:center;margin-bottom:2.8rem;
+  animation:logoFlicker 7s infinite;
 }
 
 .logo-eyebrow{
-  color:#3a0000;font-size:10px;letter-spacing:0.4em;text-transform:uppercase;margin-bottom:0.4rem;
+  color:#5a0000;font-size:11px;letter-spacing:0.45em;text-transform:uppercase;margin-bottom:0.5rem;
 }
 
 .logo-title{
-  color:#cc0000;font-size:clamp(1.4rem,4vw,2.2rem);
-  letter-spacing:0.06em;
-  text-shadow:0 0 30px rgba(200,0,0,0.6), 0 0 60px rgba(150,0,0,0.3);
+  color:#dd0000;
+  font-size:2.6rem;
+  letter-spacing:0.08em;
+  text-shadow:0 0 18px rgba(220,0,0,0.7), 0 0 50px rgba(150,0,0,0.4);
   line-height:1.15;
 }
 
 .logo-sub{
-  color:#2a0000;font-size:9px;letter-spacing:0.35em;margin-top:0.3rem;
+  color:#3d0000;font-size:11px;letter-spacing:0.3em;margin-top:0.5rem;text-transform:uppercase;
 }
 
 @keyframes logoFlicker{
-  0%,93%,97%,100%{opacity:1;}
-  94%,96%{opacity:0.2;}
+  0%,92%,96%,100%{opacity:1;}
+  93%,95%{opacity:0.15;}
 }
 
 .select-label{
-  color:#3a0000;font-size:9px;letter-spacing:0.5em;text-transform:uppercase;margin-bottom:1.2rem;
+  color:#4a0000;font-size:10px;letter-spacing:0.55em;text-transform:uppercase;margin-bottom:1.5rem;
 }
 
+/* CARDS */
 .cards-row{
-  display:flex;gap:1.8rem;flex-wrap:wrap;justify-content:center;
+  display:flex;gap:2.5rem;justify-content:center;
 }
 
 .game-card{
-  width:180px;
-  border:1px solid #1e0000;
-  background:#050000;
-  padding:1.4rem 1rem 1rem;
-  display:flex;flex-direction:column;align-items:center;gap:0.6rem;
+  width:210px;
+  border:1px solid #260000;
+  background:#060000;
+  padding:2rem 1.5rem 1.5rem;
+  display:flex;flex-direction:column;align-items:center;gap:0.8rem;
   position:relative;overflow:hidden;
   transition:border-color 0.15s,transform 0.12s;
   text-decoration:none;
@@ -105,134 +121,155 @@ body{
 .game-card.active{cursor:pointer;}
 
 .game-card.active:hover{
-  border-color:#aa0000;
-  transform:translateY(-4px);
+  border-color:#cc0000;
+  transform:translateY(-5px);
 }
 
-.game-card.active:hover .cnum{color:#ff2020;text-shadow:0 0 20px rgba(255,0,0,0.7);}
-.game-card.active:hover .cname{color:#cc0000;}
-.game-card.active:hover .corner{border-color:#aa0000;}
+.game-card.active:hover .cnum{
+  color:#ff1a1a;
+  text-shadow:0 0 25px rgba(255,0,0,0.8);
+}
+.game-card.active:hover .cname{color:#dd0000;}
+.game-card.active:hover .ctag{color:#880000;}
+.game-card.active:hover .corner{border-color:#cc0000;}
 
 .game-card.locked{
-  cursor:not-allowed;opacity:0.3;border-color:#0d0000;
+  cursor:not-allowed;opacity:0.28;border-color:#0e0000;
 }
 
 .corner{
-  position:absolute;width:8px;height:8px;
-  border-color:#2e0000;border-style:solid;
+  position:absolute;width:10px;height:10px;
+  border-color:#330000;border-style:solid;
+  transition:border-color 0.15s;
 }
-.corner.tl{top:5px;left:5px;border-width:1px 0 0 1px;}
-.corner.tr{top:5px;right:5px;border-width:1px 1px 0 0;}
-.corner.bl{bottom:5px;left:5px;border-width:0 0 1px 1px;}
-.corner.br{bottom:5px;right:5px;border-width:0 1px 1px 0;}
+.corner.tl{top:6px;left:6px;border-width:1px 0 0 1px;}
+.corner.tr{top:6px;right:6px;border-width:1px 1px 0 0;}
+.corner.bl{bottom:6px;left:6px;border-width:0 0 1px 1px;}
+.corner.br{bottom:6px;right:6px;border-width:0 1px 1px 0;}
 
 .cnum{
-  font-size:2.8rem;color:#990000;
+  font-size:3.6rem;color:#aa0000;
   line-height:1;font-family:'Share Tech Mono',monospace;
-  text-shadow:0 0 20px rgba(160,0,0,0.5);
+  text-shadow:0 0 18px rgba(170,0,0,0.6);
   transition:color 0.15s,text-shadow 0.15s;
 }
 
-.cdivider{width:30px;height:1px;background:#1a0000;}
+.cdivider{width:40px;height:1px;background:#220000;}
 
 .cname{
-  font-size:10px;color:#660000;
-  letter-spacing:0.1em;text-align:center;
-  transition:color 0.15s;line-height:1.4;
+  font-size:12px;color:#770000;
+  letter-spacing:0.12em;text-align:center;
+  transition:color 0.15s;line-height:1.6;
 }
 
 .ctag{
-  font-size:8px;color:#2e0000;letter-spacing:0.3em;text-transform:uppercase;margin-top:0.2rem;
+  font-size:10px;color:#3d0000;letter-spacing:0.3em;text-transform:uppercase;
+  margin-top:0.3rem;transition:color 0.15s;
 }
 
 .coming-badge{
-  position:absolute;top:7px;right:7px;
-  background:#080000;border:1px solid #150000;
-  font-size:7px;color:#2a0000;letter-spacing:0.2em;text-transform:uppercase;
-  padding:3px 6px;
+  position:absolute;top:8px;right:8px;
+  background:#0a0000;border:1px solid #1a0000;
+  font-size:8px;color:#330000;letter-spacing:0.18em;text-transform:uppercase;
+  padding:4px 7px;
 }
 
+/* FOOTER */
 .footer-row{
-  margin-top:2.2rem;
-  display:flex;align-items:center;gap:12px;
-  color:#1a0000;font-size:8px;letter-spacing:0.4em;text-transform:uppercase;
+  margin-top:2.5rem;
+  display:flex;align-items:center;gap:14px;
+  color:#250000;font-size:9px;letter-spacing:0.45em;text-transform:uppercase;
 }
-.footer-row span{color:#200000;}
+.footer-row span{color:#2d0000;}
 </style>
 </head>
 <body>
 
-<div id="bg"></div>
-<div id="staticOverlay"></div>
-<div id="scanlines"></div>
-<div id="vignette"></div>
-<div id="glitch-bar"></div>
-<canvas id="eyeCanvas"></canvas>
+<div id="scene">
+  <div id="bg"></div>
+  <div id="staticOverlay"></div>
+  <div id="scanlines"></div>
+  <div id="vignette"></div>
+  <div id="glitch-bar"></div>
+  <canvas id="eyeCanvas"></canvas>
 
-<div id="content">
-  <div class="logo-block">
-    <p class="logo-eyebrow">Shawn Entertainment Presents</p>
-    <p class="logo-title">FIVE NIGHTS<br>AT SHAWN'S</p>
-    <p class="logo-sub">Select a version</p>
-  </div>
-
-  <p class="select-label">&#9632; Choose your night &#9632;</p>
-
-  <div class="cards-row">
-    <a class="game-card active" href="Versions/FNAS 1" id="card1">
-      <div class="corner tl"></div><div class="corner tr"></div>
-      <div class="corner bl"></div><div class="corner br"></div>
-      <div class="cnum">1</div>
-      <div class="cdivider"></div>
-      <div class="cname">Five Nights<br>at Shawn's</div>
-      <div class="ctag">&#9654; Play Now</div>
-    </a>
-
-    <div class="game-card locked" id="card2">
-      <div class="coming-badge">Coming Soon</div>
-      <div class="corner tl"></div><div class="corner tr"></div>
-      <div class="corner bl"></div><div class="corner br"></div>
-      <div class="cnum" style="color:#150000;text-shadow:none;">2</div>
-      <div class="cdivider"></div>
-      <div class="cname" style="color:#1a0000;">Five Nights<br>at Shawn's 2</div>
-      <div class="ctag" style="color:#150000;">&#9632; Locked</div>
+  <div id="content">
+    <div class="logo-block">
+      <p class="logo-eyebrow">Shawn Entertainment Presents</p>
+      <p class="logo-title">FIVE NIGHTS<br>AT SHAWN'S</p>
+      <p class="logo-sub">Select a Version</p>
     </div>
-  </div>
 
-  <div class="footer-row">
-    <span>&#9632;</span><span>NIGHT GUARD ON DUTY</span><span>&#9632;</span>
+    <p class="select-label">&#9632; Choose Your Version &#9632;</p>
+
+    <div class="cards-row">
+      <a class="game-card active" href="Versions/FNAS 1" id="card1">
+        <div class="corner tl"></div><div class="corner tr"></div>
+        <div class="corner bl"></div><div class="corner br"></div>
+        <div class="cnum">1</div>
+        <div class="cdivider"></div>
+        <div class="cname">Five Nights<br>at Shawn's</div>
+        <div class="ctag">&#9654;&nbsp; Play Now</div>
+      </a>
+
+      <div class="game-card locked" id="card2">
+        <div class="coming-badge">Coming Soon</div>
+        <div class="corner tl"></div><div class="corner tr"></div>
+        <div class="corner bl"></div><div class="corner br"></div>
+        <div class="cnum" style="color:#180000;text-shadow:none;">2</div>
+        <div class="cdivider"></div>
+        <div class="cname" style="color:#1e0000;">Five Nights<br>at Shawn's 2</div>
+        <div class="ctag" style="color:#180000;">&#9632;&nbsp; Locked</div>
+      </div>
+    </div>
+
+    <div class="footer-row">
+      <span>&#9632;</span><span>Night Guard On Duty</span><span>&#9632;</span>
+    </div>
   </div>
 </div>
 
 <script>
+// SCALE TO FIT
+function scaleScene(){
+  let scene = document.getElementById('scene');
+  let scaleX = window.innerWidth / 700;
+  let scaleY = window.innerHeight / 500;
+  let scale = Math.min(scaleX, scaleY);
+  scene.style.transform = 'scale('+scale+')';
+}
+scaleScene();
+window.addEventListener('resize', scaleScene);
+
 // GLITCH BAR
 function runGlitchBar(){
   let bar = document.getElementById('glitch-bar');
-  bar.style.top = (Math.random()*480)+'px';
+  bar.style.top=(Math.random()*490)+'px';
   bar.style.opacity='1';
-  bar.style.width=(40+Math.random()*55)+'%';
-  bar.style.left=(Math.random()*45)+'%';
+  bar.style.width=(35+Math.random()*55)+'%';
+  bar.style.left=(Math.random()*40)+'%';
   setTimeout(()=>{bar.style.opacity='0';},55);
-  setTimeout(runGlitchBar, 700+Math.random()*2800);
+  setTimeout(runGlitchBar, 800+Math.random()*3000);
 }
 runGlitchBar();
 
 // STATIC FLICKER
-let staticEl = document.getElementById('staticOverlay');
+let staticEl=document.getElementById('staticOverlay');
 setInterval(()=>{
   let r=Math.random();
-  staticEl.style.opacity = r>0.93?'0.3':r>0.7?'0.1':'0.04';
+  staticEl.style.opacity=r>0.93?'0.28':r>0.7?'0.09':'0.04';
 },120);
 
 // SCREEN FLASH
+let bgEl=document.getElementById('bg');
 setInterval(()=>{
   if(Math.random()>0.97){
-    document.getElementById('bg').style.background='radial-gradient(ellipse at 50% 60%, #2a0000 0%, #000 80%)';
-    setTimeout(()=>{document.getElementById('bg').style.background='radial-gradient(ellipse at 50% 60%, #1a0000 0%, #000 80%)';},60);
+    bgEl.style.background='radial-gradient(ellipse at 50% 55%, #300000 0%, #000 75%)';
+    setTimeout(()=>{bgEl.style.background='radial-gradient(ellipse at 50% 55%, #200000 0%, #000 75%)';},65);
   }
-},200);
+},220);
 
-// RED EYES IN BG
+// RED EYES
 let canvas=document.getElementById('eyeCanvas');
 let ctx=canvas.getContext('2d');
 function resizeCanvas(){canvas.width=canvas.offsetWidth;canvas.height=canvas.offsetHeight;}
@@ -240,10 +277,10 @@ resizeCanvas();
 window.addEventListener('resize',resizeCanvas);
 
 let eyes=[];
-for(let i=0;i<7;i++){
+for(let i=0;i<8;i++){
   eyes.push({
     x:Math.random()*100,y:Math.random()*100,
-    size:5+Math.random()*11,
+    size:5+Math.random()*12,
     alpha:0,alphaTarget:0,
     phase:Math.random()*Math.PI*2,
     speed:0.003+Math.random()*0.004,
@@ -254,12 +291,10 @@ for(let i=0;i<7;i++){
 function drawEye(x,y,size,alpha,blink){
   if(alpha<=0.01)return;
   ctx.save();
-  ctx.globalAlpha=alpha*0.55;
+  ctx.globalAlpha=alpha*0.5;
   let sx=x/100*canvas.width, sy=y/100*canvas.height;
-  ctx.strokeStyle='#cc0000';ctx.lineWidth=0.8;
-  ctx.beginPath();
-  ctx.ellipse(sx,sy,size*2.2,size*blink,0,0,Math.PI*2);
-  ctx.stroke();
+  ctx.strokeStyle='#cc0000';ctx.lineWidth=0.9;
+  ctx.beginPath();ctx.ellipse(sx,sy,size*2.2,size*blink,0,0,Math.PI*2);ctx.stroke();
   ctx.beginPath();ctx.arc(sx,sy,size*0.7,0,Math.PI*2);ctx.stroke();
   ctx.fillStyle='#990000';
   ctx.beginPath();ctx.arc(sx,sy,size*0.28,0,Math.PI*2);ctx.fill();
@@ -280,11 +315,10 @@ function animEyes(){
 }
 animEyes();
 
-// CARD HOVER FLASH
 document.getElementById('card1').addEventListener('mouseenter',()=>{
   if(Math.random()>0.4){
-    document.body.style.filter='brightness(1.3) saturate(2)';
-    setTimeout(()=>document.body.style.filter='none',70);
+    document.getElementById('scene').style.filter='brightness(1.3) saturate(2)';
+    setTimeout(()=>document.getElementById('scene').style.filter='none',70);
   }
 });
 
