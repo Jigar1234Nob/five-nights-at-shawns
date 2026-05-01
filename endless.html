@@ -7,11 +7,15 @@
 
 <!-- Intro Message -->
 <div id="introMessage" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: rgba(0, 0, 0, 0.8); color: white; padding: 15px 20px; font-family: 'Courier New', Courier, monospace; font-size: 18px; border: 2px solid #666; z-index: 9999;">
-    <strong>Santiago:</strong> Ugh. Why Do I Have To Work Out Of All Days But Today!
+    <strong>Santiago:</strong> Wait. Why is My Time Until...
 </div>
 
 <div id="introMessage2" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: rgba(0, 0, 0, 0.8); color: white; padding: 15px 20px; font-family: 'Courier New', Courier, monospace; font-size: 18px; border: 2px solid #666; z-index: 9999; display: none;">
-    <strong>Vic:</strong> I dont care. Just Work Until 6 AM Then You Can Go Home.
+    <strong>viC:</strong> SOrRy...
+</div>
+
+<div id="introMessage3" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: rgba(139, 0, 0, 0.9); color: red; padding: 15px 20px; font-family: 'Courier New', Courier, monospace; font-size: 24px; border: 2px solid red; z-index: 9999; display: none; font-weight: bold;">
+    NIGHTMARE MODE: THERE IS NO ESCAPE
 </div>
 
 <script>
@@ -21,10 +25,16 @@
         document.getElementById('introMessage2').style.display = 'block';
     }, 5000);
     
-    // Hide second message after 10 seconds total (5 seconds after it appears)
+    // Hide second message after 10 seconds and show nightmare mode message
     setTimeout(function() {
         document.getElementById('introMessage2').style.display = 'none';
+        document.getElementById('introMessage3').style.display = 'block';
     }, 10000);
+    
+    // Hide nightmare mode message after 15 seconds
+    setTimeout(function() {
+        document.getElementById('introMessage3').style.display = 'none';
+    }, 15000);
 </script>
         
         <!-- office -->
@@ -62,7 +72,7 @@
         <!-- timer -->
         <p id='timerTxt' style='font-family: "Courier New", Courier, monospace; font-weight: bold; font-size: 150%; color: white; position: absolute; top: 5%; left: 3%'>12:00 AM</p>
         <!-- power -->
-        <p id='powerTxt' style='font-family: "Courier New", Courier, monospace; font-weight: bold; font-size: 150%; color: white; position: absolute; top: 80%; left: 3%'>POWER LEFT: 100%</p>
+        <p id='powerTxt' style='font-family: "Courier New", Courier, monospace; font-weight: bold; font-size: 150%; color: white; position: absolute; top: 80%; left: 3%'>POWER LEFT: ∞</p>
         <p id='usageTxt' style='font-family: "Courier New", Courier, monospace; font-weight: bold; font-size: 150%; color: white; position: absolute; top: 87%; left: 3%'>USAGE:</p>
         <!-- audios -->
         <audio src='nightshift/audios/blip3.wav' id='blip'></audio>
@@ -89,12 +99,12 @@
         <audio src='nightshift/audios/XSCREAM2.wav' id='goldenJumpscare'></audio>
         <!-- script -->
         <script>
-            // variables
+            // variables - NIGHTMARE MODE
             leftDoor == false;
             rightDoor == false;
             tablet = false;
             timerCounter = 12;
-            powerCounter = 100;
+            powerCounter = 999999; // INFINITE POWER
             usageCounter = 2;
             bunny = -1;
             chicken = -1;
@@ -374,130 +384,17 @@
                     setTimeout(function(){document.getElementById('static').style.opacity = '0.3';}, 500);
                 }
             }
-            // timer
+            // timer - NIGHTMARE MODE: TIME NEVER ENDS
             function timer(){
-                // timerTxt
-                document.getElementById('timerTxt').innerText = timerCounter + ' AM';
-                // timerCounter
-                timerCounter++;
-                if (timerCounter >= 13){
-                    timerCounter = 1;
-                } else if (timerCounter >= 7 && timerCounter <= 11){
-                    window.location.href = 'survived.html';
-                }
-                // timer
-                if (timerCounter >= 12){
-                    setTimeout(timer, 120000);
-                } else if (timerCounter <= 6){
-                    setTimeout(timer, 120000);
-                }
+                // Timer stays at 12 AM forever - NO ESCAPE
+                document.getElementById('timerTxt').innerText = '12 AM - NIGHTMARE';
+                setTimeout(timer, 1000);
             }
-            // power
+            // power - NIGHTMARE MODE: INFINITE POWER
             function power(){
-                // powerTxt
-                document.getElementById('powerTxt').innerText = 'POWER LEFT: ' + powerCounter + '%';
-                // powerCounter
-                powerCounter--;
-                if (powerCounter == -1){
-                    powerDown();
-                }
-	// Increases delays to make power go down slower (9s, 7.5s, 6s, 4.5s)
-	if (usageCounter == 0){
-    setTimeout(power, 9000); 
-	} else if (usageCounter == 1){
-    setTimeout(power, 7500); 
-	} else if (usageCounter == 2){
-    setTimeout(power, 6000); 
-	} else if (usageCounter == 3){
-    	setTimeout(power, 4500);
-
-                }
-            }
-            function powerDown(){
-                if (bearOutage == 0){
-                    // office
-                   document.getElementById('office').style.display = 'none';
-let scare = document.createElement('img');
-scare.src = 'nightshift/powerDown/office.gif';
-scare.style = 'position:absolute; top:0; left:0; width:100%; height:100%; z-index:1;';
-scare.id = 'jumpscareImg';
-document.body.appendChild(scare);
-                    // golden freddy
-                    document.getElementById('goldenOffice').style.visibility = 'hidden';
-                    // camera
-                    document.getElementById('camera').style.visibility = 'hidden';
-                    // static
-                    document.getElementById('static').style.visibility = 'hidden';
-                    // left
-                    document.getElementById('leftButtom').style.visibility = 'hidden';
-                    document.getElementById('leftDoor').style.visibility = 'hidden';
-                    // right
-                    document.getElementById('rightButtom').style.visibility = 'hidden';
-                    document.getElementById('rightDoor').style.visibility = 'hidden';
-                    // monitor
-                    document.getElementById('monitor').style.visibility = 'hidden';
-                    // map
-                    document.getElementById('map').style.visibility = 'hidden';
-                    // camera
-                    document.getElementById('showStage').style.visibility = 'hidden';
-                    document.getElementById('diningArea').style.visibility = 'hidden';
-                    document.getElementById('backstage').style.visibility = 'hidden';
-                    document.getElementById('pirateCove').style.visibility = 'hidden';
-                    document.getElementById('restrooms').style.visibility = 'hidden';
-                    document.getElementById('kitchen').style.visibility = 'hidden';
-                    document.getElementById('westHall').style.visibility = 'hidden';
-                    document.getElementById('supplyCloset').style.visibility = 'hidden';
-                    document.getElementById('westCorner').style.visibility = 'hidden';
-                    document.getElementById('eastHall').style.visibility = 'hidden';
-                    document.getElementById('eastCorner').style.visibility = 'hidden';
-                    // timer
-                    document.getElementById('timerTxt').style.visibility = 'hidden';
-                    // power
-                    document.getElementById('powerTxt').style.visibility = 'hidden';
-                    document.getElementById('usageTxt').style.visibility = 'hidden';
-                    // audio
-                    document.getElementById('ambienceCamera').pause();
-                    document.getElementById('laugh1').volume = 0;
-                    document.getElementById('laugh2').volume = 0;
-                    document.getElementById('laugh3').volume = 0;
-                    document.getElementById('musicBox').play();
-                    document.getElementById('kitchen1').volume = 0;
-                    document.getElementById('kitchen2').volume = 0;
-                    document.getElementById('powerDown').play();
-                    document.getElementById('run').volume = 0;
-                    document.getElementById('walk1').volume = 0;
-                    document.getElementById('walk2').volume = 0;
-                    document.getElementById('walk3').volume = 0;
-                    document.getElementById('walk4').volume = 0;
-                    document.getElementById('walk5').volume = 0;
-                    // variable
-                    leftDoor = false;
-                    rightDoor = false;
-                    tablet = false;
-                    bunny = -1;
-                    chicken = -1;
-                    bear = -1;
-                    bearOutage = 1;
-                    fox = -1;
-                    goldenRandom = 0;
-                    goldenScare = 0;
-                    // setTimeout
-                    setTimeout(powerDown, 19000);
-                } else if (bearOutage >= 1){
-                    // office
-                    document.getElementById('office').style.display = 'none';
-let scare = document.createElement('img');
-scare.src = 'nightshift/powerDown/jumpscare.gif';
-scare.style = 'position:absolute; top:0; left:0; width:100%; height:100%; z-index:1;';
-scare.id = 'jumpscareImg';
-document.body.appendChild(scare);
-                    // audio
-                    document.getElementById('musicBox').pause();
-                    document.getElementById('powerDown').pause();
-                    document.getElementById('jumpscare').play();
-                    // setTimeout
-                    setTimeout(function(){window.location.href = 'game over.html'}, 1900);
-                }
+                // Power stays infinite
+                document.getElementById('powerTxt').innerText = 'POWER LEFT: ∞';
+                setTimeout(power, 1000);
             }
             // usage
             function usage(){
@@ -511,27 +408,27 @@ document.body.appendChild(scare);
                     document.getElementById('usageTxt').innerText = 'USAGE: ||||';
                 }
             }
-            // bonnie
+            // bonnie - NIGHTMARE MODE: FASTER (6 seconds instead of 12)
             function bonnie(){
                 // bunny
                 if (bunny == -1){
                     bunny = 0;
-                    setTimeout(bonnie, 12000);
+                    setTimeout(bonnie, 6000);
                 } else if (bunny == 0){
                     bunny = 1;
-                    setTimeout(bonnie, 12000);
+                    setTimeout(bonnie, 6000);
                 } else if (bunny == 1){
                     bunny = Math.floor(Math.random() * 2) + 2;
-                    setTimeout(bonnie, 12000);
+                    setTimeout(bonnie, 6000);
                 } else if (bunny == 2){
                     bunny = 1;
-                    setTimeout(bonnie, 12000);
+                    setTimeout(bonnie, 6000);
                 } else if (bunny == 3){
                     bunny = Math.floor(Math.random() * 2) + 4;
-                    setTimeout(bonnie, 12000);
+                    setTimeout(bonnie, 6000);
                 } else if (bunny == 4){
                     bunny = 3;
-                    setTimeout(bonnie, 12000);
+                    setTimeout(bonnie, 6000);
                 } else if (bunny == 5){
                     bunny = 6;
                 }
@@ -758,27 +655,27 @@ document.body.appendChild(scare);
                     document.getElementById('walk6').play();
                 }
             }
-            // chica
+            // chica - NIGHTMARE MODE: FASTER (7.5 seconds instead of 15)
             function chica(){
                 // chicken
                 if (chicken == -1){
                     chicken = 0;
-                    setTimeout(chica, 15000);
+                    setTimeout(chica, 7500);
                 } else if (chicken == 0){
                     chicken = 1;
-                    setTimeout(chica, 15000);
+                    setTimeout(chica, 7500);
                 } else if (chicken == 1){
                     chicken = Math.floor(Math.random() * 3) + 2;
-                    setTimeout(chica, 15000);
+                    setTimeout(chica, 7500);
                 } else if (chicken == 2){
                     chicken = 1;
-                    setTimeout(chica, 15000);
+                    setTimeout(chica, 7500);
                 } else if (chicken == 3){
                     chicken = 1;
-                    setTimeout(chica, 15000);
+                    setTimeout(chica, 7500);
                 } else if (chicken == 4){
                     chicken = 5;
-                    setTimeout(chica, 15000);
+                    setTimeout(chica, 7500);
                 } else if (chicken == 5){
                     chicken = 6;
                 }
@@ -1049,27 +946,27 @@ document.body.appendChild(scare);
                     document.getElementById('walk5').play();
                 }
             }
-            // freddy
+            // freddy - NIGHTMARE MODE: FASTER (10 seconds instead of 20)
             function freddy(){
                 // bear
                 if (bear == -1){
                     bear = 0;
-                    setTimeout(freddy, 20000);
+                    setTimeout(freddy, 10000);
                 } else if (bear == 0){
                     bear = 1;
-                    setTimeout(freddy, 20000);
+                    setTimeout(freddy, 10000);
                 } else if (bear == 1){
                     bear = Math.floor(Math.random() * 3) + 2;
-                    setTimeout(freddy, 20000);
+                    setTimeout(freddy, 10000);
                 } else if (bear == 2){
                     bear = 1;
-                    setTimeout(freddy, 20000);
+                    setTimeout(freddy, 10000);
                 } else if (bear == 3){
                     bear = 1;
-                    setTimeout(freddy, 20000);
+                    setTimeout(freddy, 10000);
                 } else if (bear == 4){
                     bear = 5;
-                    setTimeout(freddy, 20000);
+                    setTimeout(freddy, 10000);
                 } else if (bear == 5){
                     bear = 6;
                 }
@@ -1352,21 +1249,21 @@ document.body.appendChild(scare);
                     document.getElementById('walk5').play();
                 }
             }
-            // foxy
+            // foxy - NIGHTMARE MODE: FASTER (15 seconds instead of 30, 1.35 second run instead of 2.7)
             function foxy(){
                 // fox
                 if (fox == -1){
                     fox = 0;
-                    setTimeout(foxy, 30000);
+                    setTimeout(foxy, 15000);
                 } else if (fox == 0){
                     fox = 1;
-                    setTimeout(foxy, 30000);
+                    setTimeout(foxy, 15000);
                 } else if (fox == 1){
                     fox = 2;
-                    setTimeout(foxy, 30000);
+                    setTimeout(foxy, 15000);
                 } else if (fox == 2){
                     fox = 3;
-                    setTimeout(foxy, 2700);
+                    setTimeout(foxy, 1350);
                 } else if (fox == 3){
                     fox = 4;
                 }
@@ -1650,11 +1547,11 @@ document.body.appendChild(scare);
 	power();
 	usage();
 
-	// delayed AI start
-	setTimeout(bonnie, 60000);   // 1 min
-	setTimeout(chica, 120000);   // 2 min
-	setTimeout(freddy, 180000);  // 3 min
-	setTimeout(foxy, 240000);    // 4 min
+	// NIGHTMARE MODE: ALL AI START IMMEDIATELY AT MAX DIFFICULTY
+	setTimeout(bonnie, 10000);    // Starts after 10 seconds (instant nightmare)
+	setTimeout(chica, 15000);     // Starts after 15 seconds
+	setTimeout(freddy, 20000);    // Starts after 20 seconds
+	setTimeout(foxy, 25000);      // Starts after 25 seconds
 
 // Disable right-click
 document.addEventListener('contextmenu', function(e) {

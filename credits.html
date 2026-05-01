@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <title>Credits</title>
+        <style>
+            body, html {
+                height: 100%;
+                margin: 0;
+                background-color: black;
+                font-family: 'Courier New', Courier, monospace;
+                color: white;
+                overflow: hidden;
+            }
+            /* Background Image */
+            .background {
+                background-image: url('game over/backstage.png');
+                height: 100%;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+                filter: brightness(50%); /* Dims the image to make text pop */
+                position: absolute;
+                width: 100%;
+                z-index: -1;
+            }
+            .container {
+                text-align: center;
+                padding-top: 50px;
+            }
+            h1 { font-size: 3em; letter-spacing: 5px; color: #cc0000; }
+            h2 { font-size: 1.5em; margin-bottom: 30px; }
+            p { font-size: 1.2em; line-height: 1.6; margin: 10px 0; }
+            
+            .role { font-weight: bold; color: #aaa; }
+            .name { color: #fff; }
+            .footer {
+                margin-top: 50px;
+                font-style: italic;
+                font-size: 0.9em;
+                color: #888;
+            }
+            /* Back Button */
+            .back-btn {
+                position: absolute;
+                bottom: 5%;
+                left: 5%;
+                cursor: pointer;
+                color: white;
+                text-decoration: none;
+                border: 2px solid white;
+                padding: 10px 20px;
+                background: rgba(0, 0, 0, 0.5);
+                transition: 0.3s;
+            }
+            .back-btn:hover {
+                background: white;
+                color: black;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="background"></div>
+        <div class="container">
+            <h1>CREDITS</h1>
+            <h2>The Developer: <span class="name">Jigar Rai | Bot3e.1111</span></h2>
+	    <h2>First Verified Person To Beat The Game: <span class="name">??? | ???</span></h2>
+            <p><span class="role">Freddy:</span> <span class="name">Shawn | Cksgmaster</span></p>
+            <p><span class="role">Foxy:</span> <span class="name">Sebastian | theduckzarebetter</span></p>
+            <p><span class="role">Bonnie:</span> <span class="name">Lachlyn | deathonhallowedground</span></p>
+            <p><span class="role">Chica:</span> <span class="name">Tashi | isuckatusernameslol_</span></p>
+   	    <p><span class="role">Night Guard:</span> <span class="name">Santiago | ._sans_. </span></p>
+   	    <p><span class="role">Phone Guy:</span> <span class="name">Vic | meenosprime </span></p>
+   	    <p><span class="role">Guy On The Cheque:</span> <span class="name">Jaydan | beegmonke7_97678 </span></p>
+	    <p><span class="role">Creator Of The Holy FNAS Logo:</span> <span class="name">Lorenzo | thevortexdev </span></p>
+            <div class="footer">
+                All Images Provided By The SPC IT CLUB Discord.
+            </div>
+        </div>
+        <a href="index.html" class="back-btn">BACK TO MENU</a>
+        
+        <script>
+            // Disable right-click
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+            });
+
+            // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+            document.addEventListener('keydown', function(e) {
+                // F12
+                if (e.keyCode == 123) {
+                    e.preventDefault();
+                }
+                // Ctrl+Shift+I
+                if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
+                    e.preventDefault();
+                }
+                // Ctrl+Shift+J
+                if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
+                    e.preventDefault();
+                }
+                // Ctrl+U
+                if (e.ctrlKey && e.keyCode == 85) {
+                    e.preventDefault();
+                }
+            });
+        </script>
+    </body>
+</html>
