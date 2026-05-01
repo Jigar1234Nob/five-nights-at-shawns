@@ -1,241 +1,294 @@
+
+<!DOCTYPE html>
 <html>
 <head>
-    <meta charset='utf-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-</head>
+<meta charset='utf-8'>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  background:#000;
+  font-family:'Share Tech Mono','Courier New',monospace;
+  overflow:hidden;
+  width:100%;height:500px;
+  position:relative;
+}
+
+#bg{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 60%, #1a0000 0%, #000 80%);
+}
+
+#scanlines{
+  position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.28) 3px,rgba(0,0,0,0.28) 4px);
+  pointer-events:none;z-index:50;
+}
+
+#staticOverlay{
+  position:absolute;inset:0;
+  opacity:0.07;pointer-events:none;z-index:49;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px 200px;
+}
+
+#vignette{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(0,0,0,0.92) 100%);
+  pointer-events:none;z-index:48;
+}
+
+#glitch-bar{
+  position:absolute;height:2px;
+  background:rgba(180,0,0,0.6);
+  left:0;width:100%;z-index:200;
+  pointer-events:none;opacity:0;
+}
+
+#content{
+  position:relative;z-index:100;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  height:500px;gap:0;
+}
+
+#eyeCanvas{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  z-index:5;pointer-events:none;
+}
+
+.logo-block{
+  text-align:center;margin-bottom:2.5rem;
+  animation:logoFlicker 6s infinite;
+}
+
+.logo-eyebrow{
+  color:#3a0000;font-size:10px;letter-spacing:0.4em;text-transform:uppercase;margin-bottom:0.4rem;
+}
+
+.logo-title{
+  color:#cc0000;font-size:clamp(1.4rem,4vw,2.2rem);
+  letter-spacing:0.06em;
+  text-shadow:0 0 30px rgba(200,0,0,0.6), 0 0 60px rgba(150,0,0,0.3);
+  line-height:1.15;
+}
+
+.logo-sub{
+  color:#2a0000;font-size:9px;letter-spacing:0.35em;margin-top:0.3rem;
+}
+
+@keyframes logoFlicker{
+  0%,93%,97%,100%{opacity:1;}
+  94%,96%{opacity:0.2;}
+}
+
+.select-label{
+  color:#3a0000;font-size:9px;letter-spacing:0.5em;text-transform:uppercase;margin-bottom:1.2rem;
+}
+
+.cards-row{
+  display:flex;gap:1.8rem;flex-wrap:wrap;justify-content:center;
+}
+
+.game-card{
+  width:180px;
+  border:1px solid #1e0000;
+  background:#050000;
+  padding:1.4rem 1rem 1rem;
+  display:flex;flex-direction:column;align-items:center;gap:0.6rem;
+  position:relative;overflow:hidden;
+  transition:border-color 0.15s,transform 0.12s;
+  text-decoration:none;
+}
+
+.game-card.active{cursor:pointer;}
+
+.game-card.active:hover{
+  border-color:#aa0000;
+  transform:translateY(-4px);
+}
+
+.game-card.active:hover .cnum{color:#ff2020;text-shadow:0 0 20px rgba(255,0,0,0.7);}
+.game-card.active:hover .cname{color:#cc0000;}
+.game-card.active:hover .corner{border-color:#aa0000;}
+
+.game-card.locked{
+  cursor:not-allowed;opacity:0.3;border-color:#0d0000;
+}
+
+.corner{
+  position:absolute;width:8px;height:8px;
+  border-color:#2e0000;border-style:solid;
+}
+.corner.tl{top:5px;left:5px;border-width:1px 0 0 1px;}
+.corner.tr{top:5px;right:5px;border-width:1px 1px 0 0;}
+.corner.bl{bottom:5px;left:5px;border-width:0 0 1px 1px;}
+.corner.br{bottom:5px;right:5px;border-width:0 1px 1px 0;}
+
+.cnum{
+  font-size:2.8rem;color:#990000;
+  line-height:1;font-family:'Share Tech Mono',monospace;
+  text-shadow:0 0 20px rgba(160,0,0,0.5);
+  transition:color 0.15s,text-shadow 0.15s;
+}
+
+.cdivider{width:30px;height:1px;background:#1a0000;}
+
+.cname{
+  font-size:10px;color:#660000;
+  letter-spacing:0.1em;text-align:center;
+  transition:color 0.15s;line-height:1.4;
+}
+
+.ctag{
+  font-size:8px;color:#2e0000;letter-spacing:0.3em;text-transform:uppercase;margin-top:0.2rem;
+}
+
+.coming-badge{
+  position:absolute;top:7px;right:7px;
+  background:#080000;border:1px solid #150000;
+  font-size:7px;color:#2a0000;letter-spacing:0.2em;text-transform:uppercase;
+  padding:3px 6px;
+}
+
+.footer-row{
+  margin-top:2.2rem;
+  display:flex;align-items:center;gap:12px;
+  color:#1a0000;font-size:8px;letter-spacing:0.4em;text-transform:uppercase;
+}
+.footer-row span{color:#200000;}
+</style>
+</head>
 <body>
 
-<!-- LOADING -->
-<div id="loadingScreen" style="position:fixed;top:0;left:0;width:100%;height:100%;background:black;z-index:10001;display:flex;flex-direction:column;justify-content:center;align-items:center;">
-    <p style="color:white;font-family:'Courier New';font-size:24px;font-weight:bold;">LOADING...</p>
-    <p id="loadingPercent" style="color:white;font-family:'Courier New';font-size:36px;font-weight:bold;">0%</p>
+<div id="bg"></div>
+<div id="staticOverlay"></div>
+<div id="scanlines"></div>
+<div id="vignette"></div>
+<div id="glitch-bar"></div>
+<canvas id="eyeCanvas"></canvas>
+
+<div id="content">
+  <div class="logo-block">
+    <p class="logo-eyebrow">Shawn Entertainment Presents</p>
+    <p class="logo-title">FIVE NIGHTS<br>AT SHAWN'S</p>
+    <p class="logo-sub">Select a version</p>
+  </div>
+
+  <p class="select-label">&#9632; Choose your night &#9632;</p>
+
+  <div class="cards-row">
+    <a class="game-card active" href="/Versions/FNAS 1" id="card1">
+      <div class="corner tl"></div><div class="corner tr"></div>
+      <div class="corner bl"></div><div class="corner br"></div>
+      <div class="cnum">1</div>
+      <div class="cdivider"></div>
+      <div class="cname">Five Nights<br>at Shawn's</div>
+      <div class="ctag">&#9654; Play Now</div>
+    </a>
+
+    <div class="game-card locked" id="card2">
+      <div class="coming-badge">Coming Soon</div>
+      <div class="corner tl"></div><div class="corner tr"></div>
+      <div class="corner bl"></div><div class="corner br"></div>
+      <div class="cnum" style="color:#150000;text-shadow:none;">2</div>
+      <div class="cdivider"></div>
+      <div class="cname" style="color:#1a0000;">Five Nights<br>at Shawn's 2</div>
+      <div class="ctag" style="color:#150000;">&#9632; Locked</div>
+    </div>
+  </div>
+
+  <div class="footer-row">
+    <span>&#9632;</span><span>NIGHT GUARD ON DUTY</span><span>&#9632;</span>
+  </div>
 </div>
-
-<!-- START SCREEN -->
-<div id="startOverlay" onclick="startGame()"
-style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:10000;display:none;justify-content:center;align-items:center;flex-direction:column;cursor:pointer;text-align:center;">
-
-    <p style="color:red;font-family:'Courier New';font-size:18px;font-weight:bold;max-width:70%;margin-bottom:20px;">
-        WARNING: THIS GAME CONTAINS FLASHING LIGHTS, FAST VISUAL EFFECTS, AND STROBING.<br>
-        NOT SUITABLE FOR PEOPLE WITH PHOTOSENSITIVE EPILEPSY.
-    </p>
-
-    <p style="color:white;font-family:'Courier New';font-size:36px;font-weight:bold;">
-        CLICK TO START
-    </p>
-
-</div>
-
-<!-- BACKGROUND -->
-<img src='title screen/freddy/glitch1.png' id='freddy' width='100%' height='100%' style='position:absolute;top:0;left:0;'>
-<img src='title screen/static.gif' id='static' width='100%' height='100%' style='position:absolute;top:0;left:0;'>
-
-<!-- LOGO -->
-<img src='title screen/logo.png' width='15%' height='40%' style='position:absolute;top:10%;left:5%;'>
-
-<!-- PLAY -->
-<img src='title screen/playGame.png' id='playGame'
-onclick='showModes()'
-onmouseover='static(); arrows(true, "73.5%")'
-onmouseout='arrows(false)'
-width='13%' height='5%'
-style='position:absolute;top:73%;left:5%;cursor:pointer;'>
-
-<!-- CREDITS -->
-<img src='title screen/credits.png' id='credits'
-onclick='window.location.href="credits.html"'
-onmouseover='static(); arrows(true, "80.5%")'
-onmouseout='arrows(false)'
-width='13%' height='5%'
-style='position:absolute;top:80%;left:5%;cursor:pointer;'>
-
-<!-- BASE MODE -->
-<img src='title screen/baseMode.png' id='baseMode'
-onclick='window.location.href="nightshift.html"'
-width='13%' height='5%'
-style='position:absolute;top:73%;left:5%;cursor:pointer;display:none;'>
-
-<!-- ENDLESS MODE -->
-<img src='title screen/endlessMode.png' id='endlessMode'
-onclick='window.location.href="endless.html"'
-onmouseover='startEndlessChaos(); static(); arrows(true, "80.5%")'
-onmouseout='stopEndlessChaos(); arrows(false)'
-width='13%' height='5%'
-style='position:absolute;top:80%;left:5%;cursor:pointer;display:none;'>
-
-<!-- BACK -->
-<img src='title screen/back.png' id='backBtn'
-onclick='hideModes()'
-width='10%' height='5%'
-style='position:absolute;top:88%;left:5%;cursor:pointer;display:none;'>
-
-<!-- ARROWS -->
-<img src='title screen/arrows.png' id='arrows'
-width='3%' height='3%'
-style='position:absolute;top:73.5%;left:20%;visibility:hidden;'>
-
-<!-- AUDIO -->
-<audio src='nightshift/audios/music box.wav' id='musicBox' loop></audio>
 
 <script>
+// GLITCH BAR
+function runGlitchBar(){
+  let bar = document.getElementById('glitch-bar');
+  bar.style.top = (Math.random()*480)+'px';
+  bar.style.opacity='1';
+  bar.style.width=(40+Math.random()*55)+'%';
+  bar.style.left=(Math.random()*45)+'%';
+  setTimeout(()=>{bar.style.opacity='0';},55);
+  setTimeout(runGlitchBar, 700+Math.random()*2800);
+}
+runGlitchBar();
 
-var loadingPercent = 0;
-let endlessChaosInterval = null;
+// STATIC FLICKER
+let staticEl = document.getElementById('staticOverlay');
+setInterval(()=>{
+  let r=Math.random();
+  staticEl.style.opacity = r>0.93?'0.3':r>0.7?'0.1':'0.04';
+},120);
 
-// ---------------- LOADING ----------------
-function fakeLoading(){
-    loadingPercent += Math.floor(Math.random() * 15) + 5;
+// SCREEN FLASH
+setInterval(()=>{
+  if(Math.random()>0.97){
+    document.getElementById('bg').style.background='radial-gradient(ellipse at 50% 60%, #2a0000 0%, #000 80%)';
+    setTimeout(()=>{document.getElementById('bg').style.background='radial-gradient(ellipse at 50% 60%, #1a0000 0%, #000 80%)';},60);
+  }
+},200);
 
-    if(loadingPercent >= 100){
-        loadingPercent = 100;
-        document.getElementById('loadingPercent').innerText = "100%";
+// RED EYES IN BG
+let canvas=document.getElementById('eyeCanvas');
+let ctx=canvas.getContext('2d');
+function resizeCanvas(){canvas.width=canvas.offsetWidth;canvas.height=canvas.offsetHeight;}
+resizeCanvas();
+window.addEventListener('resize',resizeCanvas);
 
-        setTimeout(function(){
-            document.getElementById('loadingScreen').style.display = 'none';
-            document.getElementById('startOverlay').style.display = 'flex';
-        }, 500);
-    } else {
-        document.getElementById('loadingPercent').innerText = loadingPercent + '%';
-        setTimeout(fakeLoading, Math.random() * 200 + 100);
-    }
+let eyes=[];
+for(let i=0;i<7;i++){
+  eyes.push({
+    x:Math.random()*100,y:Math.random()*100,
+    size:5+Math.random()*11,
+    alpha:0,alphaTarget:0,
+    phase:Math.random()*Math.PI*2,
+    speed:0.003+Math.random()*0.004,
+    blink:1,blinkT:Math.random()*10
+  });
 }
 
-// ---------------- START ----------------
-function startGame(){
-    document.getElementById('startOverlay').style.display = 'none';
-    document.getElementById('musicBox').play();
+function drawEye(x,y,size,alpha,blink){
+  if(alpha<=0.01)return;
+  ctx.save();
+  ctx.globalAlpha=alpha*0.55;
+  let sx=x/100*canvas.width, sy=y/100*canvas.height;
+  ctx.strokeStyle='#cc0000';ctx.lineWidth=0.8;
+  ctx.beginPath();
+  ctx.ellipse(sx,sy,size*2.2,size*blink,0,0,Math.PI*2);
+  ctx.stroke();
+  ctx.beginPath();ctx.arc(sx,sy,size*0.7,0,Math.PI*2);ctx.stroke();
+  ctx.fillStyle='#990000';
+  ctx.beginPath();ctx.arc(sx,sy,size*0.28,0,Math.PI*2);ctx.fill();
+  ctx.restore();
 }
 
-// ---------------- MENU ----------------
-function showModes(){
-    document.getElementById('playGame').style.display = 'none';
-    document.getElementById('credits').style.display = 'none';
-
-    document.getElementById('baseMode').style.display = 'block';
-    document.getElementById('endlessMode').style.display = 'block';
-    document.getElementById('backBtn').style.display = 'block';
+function animEyes(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  eyes.forEach(e=>{
+    e.phase+=e.speed;
+    e.alphaTarget=(Math.sin(e.phase)>0.5)?0.4+Math.random()*0.35:0;
+    e.alpha+=(e.alphaTarget-e.alpha)*0.04;
+    e.blinkT+=0.04;
+    e.blink=Math.abs(Math.sin(e.blinkT*3))*0.8+0.2;
+    drawEye(e.x,e.y,e.size,e.alpha,e.blink);
+  });
+  requestAnimationFrame(animEyes);
 }
+animEyes();
 
-function hideModes(){
-    document.getElementById('playGame').style.display = 'block';
-    document.getElementById('credits').style.display = 'block';
-
-    document.getElementById('baseMode').style.display = 'none';
-    document.getElementById('endlessMode').style.display = 'none';
-    document.getElementById('backBtn').style.display = 'none';
-}
-
-// ---------------- VISUAL EFFECTS ----------------
-function static(){
-    let s = document.getElementById('static');
-    s.style.opacity = '1';
-    setTimeout(()=> s.style.opacity = '0.3', 400);
-}
-
-function arrows(on, pos){
-    let a = document.getElementById('arrows');
-
-    if(on){
-        a.style.top = pos;
-        a.style.visibility = 'visible';
-    } else {
-        a.style.visibility = 'hidden';
-    }
-}
-
-// ---------------- FREDDY ----------------
-function freddy(){
-    setInterval(function(){
-        let n = Math.floor(Math.random() * 4) + 1;
-        document.getElementById('freddy').src =
-            'title screen/freddy/glitch' + n + '.png';
-    }, 90);
-}
-
-// ---------------- GLOBAL FLICKER ----------------
-function screenFlicker(){
-    let s = document.getElementById('static');
-
-    setInterval(function(){
-        let r = Math.random();
-        s.style.opacity = (r > 0.7) ? '1' : (r > 0.4 ? '0.4' : '0.1');
-    }, 120);
-}
-
-function uiFlicker(){
-    let ids = ['playGame','credits','baseMode','endlessMode','backBtn'];
-
-    setInterval(function(){
-        ids.forEach(id=>{
-            let el = document.getElementById(id);
-            if(!el) return;
-
-            let r = Math.random();
-            el.style.opacity = (r > 0.9) ? '0.2' : (r > 0.6 ? '0.6' : '1');
-        });
-    }, 120);
-}
-
-// ---------------- ENDLESS CHAOS ----------------
-function startEndlessChaos(){
-    let btn = document.getElementById('endlessMode');
-    let freddy = document.getElementById('freddy');
-
-    if(endlessChaosInterval) return;
-
-    endlessChaosInterval = setInterval(function(){
-
-        btn.style.left = (5 + (Math.random() * 1.5 - 0.75)) + '%';
-        btn.style.top = (80 + (Math.random() * 1.5 - 0.75)) + '%';
-
-        let r = Math.random();
-        btn.style.opacity = (r > 0.85) ? '0.1' : (r > 0.6 ? '0.4' : '1');
-
-        if(Math.random() > 0.7){
-            let n = Math.floor(Math.random() * 4) + 1;
-            freddy.src = 'title screen/freddy/glitch' + n + '.png';
-        }
-
-        if(Math.random() > 0.92){
-            document.body.style.filter = "invert(1)";
-            setTimeout(()=> document.body.style.filter = "none", 70);
-        }
-
-    }, 60);
-}
-
-function stopEndlessChaos(){
-    clearInterval(endlessChaosInterval);
-    endlessChaosInterval = null;
-
-    let btn = document.getElementById('endlessMode');
-
-    btn.style.left = '5%';
-    btn.style.top = '80%';
-    btn.style.opacity = '1';
-
-    document.body.style.filter = "none";
-}
-
-// ---------------- INIT ----------------
-fakeLoading();
-freddy();
-static();
-
-screenFlicker();
-uiFlicker();
-
-// disable inspect
-document.addEventListener('contextmenu', e => e.preventDefault());
-document.addEventListener('keydown', function(e){
-    if(e.keyCode == 123) e.preventDefault();
-    if(e.ctrlKey && e.shiftKey && e.keyCode == 73) e.preventDefault();
-    if(e.ctrlKey && e.shiftKey && e.keyCode == 74) e.preventDefault();
-    if(e.ctrlKey && e.keyCode == 85) e.preventDefault();
+// CARD HOVER FLASH
+document.getElementById('card1').addEventListener('mouseenter',()=>{
+  if(Math.random()>0.4){
+    document.body.style.filter='brightness(1.3) saturate(2)';
+    setTimeout(()=>document.body.style.filter='none',70);
+  }
 });
 
+document.addEventListener('contextmenu',e=>e.preventDefault());
 </script>
-
 </body>
 </html>
