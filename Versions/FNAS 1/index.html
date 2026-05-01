@@ -1,0 +1,241 @@
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+</head>
+
+<body>
+
+<!-- LOADING -->
+<div id="loadingScreen" style="position:fixed;top:0;left:0;width:100%;height:100%;background:black;z-index:10001;display:flex;flex-direction:column;justify-content:center;align-items:center;">
+    <p style="color:white;font-family:'Courier New';font-size:24px;font-weight:bold;">LOADING...</p>
+    <p id="loadingPercent" style="color:white;font-family:'Courier New';font-size:36px;font-weight:bold;">0%</p>
+</div>
+
+<!-- START SCREEN -->
+<div id="startOverlay" onclick="startGame()"
+style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:10000;display:none;justify-content:center;align-items:center;flex-direction:column;cursor:pointer;text-align:center;">
+
+    <p style="color:red;font-family:'Courier New';font-size:18px;font-weight:bold;max-width:70%;margin-bottom:20px;">
+        WARNING: THIS GAME CONTAINS FLASHING LIGHTS, FAST VISUAL EFFECTS, AND STROBING.<br>
+        NOT SUITABLE FOR PEOPLE WITH PHOTOSENSITIVE EPILEPSY.
+    </p>
+
+    <p style="color:white;font-family:'Courier New';font-size:36px;font-weight:bold;">
+        CLICK TO START
+    </p>
+
+</div>
+
+<!-- BACKGROUND -->
+<img src='title screen/freddy/glitch1.png' id='freddy' width='100%' height='100%' style='position:absolute;top:0;left:0;'>
+<img src='title screen/static.gif' id='static' width='100%' height='100%' style='position:absolute;top:0;left:0;'>
+
+<!-- LOGO -->
+<img src='title screen/logo.png' width='15%' height='40%' style='position:absolute;top:10%;left:5%;'>
+
+<!-- PLAY -->
+<img src='title screen/playGame.png' id='playGame'
+onclick='showModes()'
+onmouseover='static(); arrows(true, "73.5%")'
+onmouseout='arrows(false)'
+width='13%' height='5%'
+style='position:absolute;top:73%;left:5%;cursor:pointer;'>
+
+<!-- CREDITS -->
+<img src='title screen/credits.png' id='credits'
+onclick='window.location.href="credits.html"'
+onmouseover='static(); arrows(true, "80.5%")'
+onmouseout='arrows(false)'
+width='13%' height='5%'
+style='position:absolute;top:80%;left:5%;cursor:pointer;'>
+
+<!-- BASE MODE -->
+<img src='title screen/baseMode.png' id='baseMode'
+onclick='window.location.href="nightshift.html"'
+width='13%' height='5%'
+style='position:absolute;top:73%;left:5%;cursor:pointer;display:none;'>
+
+<!-- ENDLESS MODE -->
+<img src='title screen/endlessMode.png' id='endlessMode'
+onclick='window.location.href="endless.html"'
+onmouseover='startEndlessChaos(); static(); arrows(true, "80.5%")'
+onmouseout='stopEndlessChaos(); arrows(false)'
+width='13%' height='5%'
+style='position:absolute;top:80%;left:5%;cursor:pointer;display:none;'>
+
+<!-- BACK -->
+<img src='title screen/back.png' id='backBtn'
+onclick='hideModes()'
+width='10%' height='5%'
+style='position:absolute;top:88%;left:5%;cursor:pointer;display:none;'>
+
+<!-- ARROWS -->
+<img src='title screen/arrows.png' id='arrows'
+width='3%' height='3%'
+style='position:absolute;top:73.5%;left:20%;visibility:hidden;'>
+
+<!-- AUDIO -->
+<audio src='nightshift/audios/music box.wav' id='musicBox' loop></audio>
+
+<script>
+
+var loadingPercent = 0;
+let endlessChaosInterval = null;
+
+// ---------------- LOADING ----------------
+function fakeLoading(){
+    loadingPercent += Math.floor(Math.random() * 15) + 5;
+
+    if(loadingPercent >= 100){
+        loadingPercent = 100;
+        document.getElementById('loadingPercent').innerText = "100%";
+
+        setTimeout(function(){
+            document.getElementById('loadingScreen').style.display = 'none';
+            document.getElementById('startOverlay').style.display = 'flex';
+        }, 500);
+    } else {
+        document.getElementById('loadingPercent').innerText = loadingPercent + '%';
+        setTimeout(fakeLoading, Math.random() * 200 + 100);
+    }
+}
+
+// ---------------- START ----------------
+function startGame(){
+    document.getElementById('startOverlay').style.display = 'none';
+    document.getElementById('musicBox').play();
+}
+
+// ---------------- MENU ----------------
+function showModes(){
+    document.getElementById('playGame').style.display = 'none';
+    document.getElementById('credits').style.display = 'none';
+
+    document.getElementById('baseMode').style.display = 'block';
+    document.getElementById('endlessMode').style.display = 'block';
+    document.getElementById('backBtn').style.display = 'block';
+}
+
+function hideModes(){
+    document.getElementById('playGame').style.display = 'block';
+    document.getElementById('credits').style.display = 'block';
+
+    document.getElementById('baseMode').style.display = 'none';
+    document.getElementById('endlessMode').style.display = 'none';
+    document.getElementById('backBtn').style.display = 'none';
+}
+
+// ---------------- VISUAL EFFECTS ----------------
+function static(){
+    let s = document.getElementById('static');
+    s.style.opacity = '1';
+    setTimeout(()=> s.style.opacity = '0.3', 400);
+}
+
+function arrows(on, pos){
+    let a = document.getElementById('arrows');
+
+    if(on){
+        a.style.top = pos;
+        a.style.visibility = 'visible';
+    } else {
+        a.style.visibility = 'hidden';
+    }
+}
+
+// ---------------- FREDDY ----------------
+function freddy(){
+    setInterval(function(){
+        let n = Math.floor(Math.random() * 4) + 1;
+        document.getElementById('freddy').src =
+            'title screen/freddy/glitch' + n + '.png';
+    }, 90);
+}
+
+// ---------------- GLOBAL FLICKER ----------------
+function screenFlicker(){
+    let s = document.getElementById('static');
+
+    setInterval(function(){
+        let r = Math.random();
+        s.style.opacity = (r > 0.7) ? '1' : (r > 0.4 ? '0.4' : '0.1');
+    }, 120);
+}
+
+function uiFlicker(){
+    let ids = ['playGame','credits','baseMode','endlessMode','backBtn'];
+
+    setInterval(function(){
+        ids.forEach(id=>{
+            let el = document.getElementById(id);
+            if(!el) return;
+
+            let r = Math.random();
+            el.style.opacity = (r > 0.9) ? '0.2' : (r > 0.6 ? '0.6' : '1');
+        });
+    }, 120);
+}
+
+// ---------------- ENDLESS CHAOS ----------------
+function startEndlessChaos(){
+    let btn = document.getElementById('endlessMode');
+    let freddy = document.getElementById('freddy');
+
+    if(endlessChaosInterval) return;
+
+    endlessChaosInterval = setInterval(function(){
+
+        btn.style.left = (5 + (Math.random() * 1.5 - 0.75)) + '%';
+        btn.style.top = (80 + (Math.random() * 1.5 - 0.75)) + '%';
+
+        let r = Math.random();
+        btn.style.opacity = (r > 0.85) ? '0.1' : (r > 0.6 ? '0.4' : '1');
+
+        if(Math.random() > 0.7){
+            let n = Math.floor(Math.random() * 4) + 1;
+            freddy.src = 'title screen/freddy/glitch' + n + '.png';
+        }
+
+        if(Math.random() > 0.92){
+            document.body.style.filter = "invert(1)";
+            setTimeout(()=> document.body.style.filter = "none", 70);
+        }
+
+    }, 60);
+}
+
+function stopEndlessChaos(){
+    clearInterval(endlessChaosInterval);
+    endlessChaosInterval = null;
+
+    let btn = document.getElementById('endlessMode');
+
+    btn.style.left = '5%';
+    btn.style.top = '80%';
+    btn.style.opacity = '1';
+
+    document.body.style.filter = "none";
+}
+
+// ---------------- INIT ----------------
+fakeLoading();
+freddy();
+static();
+
+screenFlicker();
+uiFlicker();
+
+// disable inspect
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('keydown', function(e){
+    if(e.keyCode == 123) e.preventDefault();
+    if(e.ctrlKey && e.shiftKey && e.keyCode == 73) e.preventDefault();
+    if(e.ctrlKey && e.shiftKey && e.keyCode == 74) e.preventDefault();
+    if(e.ctrlKey && e.keyCode == 85) e.preventDefault();
+});
+
+</script>
+
+</body>
+</html>
