@@ -3,6 +3,8 @@ Welcome To FNAS 1.
 
 This is a Game Where You Must Stop 4 Animatronic Turned Humans From Trying TO Kill You.
 
+## Cast
+
 Freddy - Shawn
 
 Bonnie - Lachlyn
@@ -13,6 +15,8 @@ Foxy - Sebastian
 
 # Five Nights at Shawn's 2
 Coming Soon...
+
+## Cast
 
 Toy Freddy - Shawn
 
