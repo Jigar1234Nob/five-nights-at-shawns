@@ -1,9 +1,13 @@
 <html>
-    <head>
-        <meta charset='utf-8'>
-        <meta name='viewport' content='width=device-width, initial-scale=1'>
-    </head>
-    <body>
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+</head>
+<body>
+
+<!-- Audio -->
+<audio id="santiagoAudio" src="nightshift/santiago1.mp3"></audio>
+<audio id="vicAudio" src="nightshift/vic1.mp3"></audio>
 
 <!-- Intro Message -->
 <div id="introMessage" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: rgba(0, 0, 0, 0.8); color: white; padding: 15px 20px; font-family: 'Courier New', Courier, monospace; font-size: 18px; border: 2px solid #666; z-index: 9999;">
@@ -15,28 +19,39 @@
 </div>
 
 <script>
+    // Play Santiago when page loads
+    window.addEventListener('load', function() {
+        document.getElementById('santiagoAudio').play().catch(() => {});
+    });
+
     // Hide first message after 5 seconds and show second message
     setTimeout(function() {
         document.getElementById('introMessage').style.display = 'none';
         document.getElementById('introMessage2').style.display = 'block';
+
+        // Play Vic audio
+        document.getElementById('vicAudio').play().catch(() => {});
     }, 5000);
     
-    // Hide second message after 10 seconds total (5 seconds after it appears)
+    // Hide second message after 10 seconds total
     setTimeout(function() {
         document.getElementById('introMessage2').style.display = 'none';
     }, 10000);
 </script>
         
-        <!-- office -->
-        <video id='office' width='100%' height='100%' style='position: absolute; top: 0%; left: 0%; object-fit: cover;' autoplay loop muted playsinline>
+<!-- office -->
+<video id='office' width='100%' height='100%' style='position: absolute; top: 0%; left: 0%; object-fit: cover;' autoplay loop muted playsinline>
     <source src='nightshift/office.mp4' type='video/mp4'>
 </video>
-        <!-- office -->
-        <img src='nightshift/goldenFreddy/office.png' id='goldenOffice' width='30%' height='60%' style='position: absolute; top: 40%; left: 20%; visibility: hidden'>
-        <!-- camera -->
-        <img src='nightshift/kitchen.png' id='camera' width='100%' height='100%' style='position: absolute; top: 0%; left: 0%; visibility: hidden'>
-        <!-- static -->
-        <img src='nightshift/static.gif' id='static' width='100%' height='100%' style='position: absolute; top: 0%; left: 0%; visibility: hidden'>
+
+<!-- office -->
+<img src='nightshift/goldenFreddy/office.png' id='goldenOffice' width='30%' height='60%' style='position: absolute; top: 40%; left: 20%; visibility: hidden'>
+
+<!-- camera -->
+<img src='nightshift/kitchen.png' id='camera' width='100%' height='100%' style='position: absolute; top: 0%; left: 0%; visibility: hidden'>
+
+<!-- static -->
+<img src='nightshift/static.gif' id='static' width='100%' height='100%' style='position: absolute; top: 0%; left: 0%; visibility: hidden'>
         <!-- monitor -->
         <img src='nightshift/monitor.png' id='monitor' onclick='monitor(); static(); goldenAI()' width='44%' height='8%' style='position: absolute; top: 87%; left: 27%'>
         <!-- map -->

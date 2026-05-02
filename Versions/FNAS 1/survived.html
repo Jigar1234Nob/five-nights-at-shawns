@@ -9,9 +9,87 @@
         <!-- timer -->
         <img src='survived/five.png' id='timer' width='4%' height='10%' style='position: absolute; top: 44%; left: 39%'>
         <!-- am -->
-        <img src='survived/am.png' width='9%' height='10%' style='position: absolute; top: 44%; left: 47%'>
+        <img src='survived/am.png' id='am' width='9%' height='10%' style='position: absolute; top: 44%; left: 47%'>
+        <!-- black screen -->
+        <div id='blackScreen' style='position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: black; opacity: 0; z-index: 100; transition: opacity 1.5s;'></div>
+        <!-- cheque -->
+        <div id='cheque' style='display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: black; z-index: 200; justify-content: center; align-items: center; overflow: hidden;'>
+            <div id='chequeInner' style='background-color: #f5f0e1; border: 3px solid #333; width: 850px; min-height: 450px; padding: 40px; font-family: "Courier New", Courier, monospace; box-shadow: 8px 8px 20px rgba(255,255,255,0.1); transform: rotate(-5deg); opacity: 0; transition: opacity 1.5s;'>
+                <!-- cheque header -->
+                <div style='display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;'>
+                    <div>
+                        <p style='font-size: 20px; font-weight: bold; margin: 0; color: #ff0000;'>Shawn's Pizza</p>
+                        <p style='font-size: 12px; margin: 4px 0 0 0; color: #333;'>65 Shawn Road, Cranbourne, Victoria</p>
+                    </div>
+                    <div style='text-align: right;'>
+                        <p style='font-size: 13px; margin: 0; color: #333;'>No. <span style='border-bottom: 1px solid #333;'>00421</span></p>
+                        <p style='font-size: 13px; margin: 6px 0 0 0; color: #333;'>Date: <span id='realDate' style='border-bottom: 1px solid #333;'></span></p>
+                    </div>
+                </div>
+                <!-- pay to -->
+                <div style='margin-bottom: 16px;'>
+                    <p style='font-size: 13px; color: #333; margin: 0;'>PAY TO THE ORDER OF</p>
+                    <div style='border-bottom: 2px solid #333; padding-bottom: 4px; margin-top: 6px;'>
+                        <span style='font-size: 18px; color: #000;'>Jaydan</span>
+                    </div>
+                </div>
+                <!-- amount box -->
+                <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;'>
+                    <p style='font-size: 13px; color: #333; margin: 0; flex: 1; border-bottom: 2px solid #333; padding-bottom: 4px;'>
+                        One Hundred and 50/100 - - - - - - - - - - - - - - - - - - - DOLLARS
+                    </p>
+                    <div style='border: 2px solid #333; padding: 6px 14px; margin-left: 20px; font-size: 20px; font-weight: bold; color: #000; white-space: nowrap;'>
+                        $ 100.50
+                    </div>
+                </div>
+                <!-- bank -->
+                <div style='margin-bottom: 30px;'>
+                    <p style='font-size: 12px; color: #555; margin: 0;'>National Bank Of Australia</p>
+                    <p style='font-size: 12px; color: #555; margin: 2px 0 0 0;'>Cranbourne, 3977, Victoria</p>
+                </div>
+                <!-- signature -->
+                <div style='display: flex; justify-content: space-between; align-items: flex-end;'>
+                    <div>
+                        <p style='font-size: 11px; color: #555; margin: 0;'>MEMO: Night Shift Pay</p>
+                    </div>
+                    <div style='text-align: center;'>
+                        <div style='border-bottom: 2px solid #333; width: 200px; margin-bottom: 4px;'>
+                            <span style='font-family: Georgia, serif; font-size: 20px; font-style: italic; color: #000;'>Santiago</span>
+                        </div>
+                        <p style='font-size: 11px; color: #555; margin: 0;'>AUTHORIZED SIGNATURE</p>
+                    </div>
+                </div>
+                <!-- routing numbers -->
+                <div style='margin-top: 20px; border-top: 1px dashed #aaa; padding-top: 10px;'>
+                    <p style='font-size: 11px; color: #888; margin: 0; letter-spacing: 3px;'>⑆ 021000021 ⑆ 4521837 ⑈ 00421</p>
+                </div>
+            </div>
+        </div>
         <!-- script -->
         <script>
+            // real time
+            function getRealTime(){
+                var now = new Date();
+                var dateOptions = {
+                    timeZone: 'Australia/Melbourne',
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                };
+                var timeOptions = {
+                    timeZone: 'Australia/Melbourne',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true
+                };
+                var dateStr = now.toLocaleDateString('en-AU', dateOptions);
+                var timeStr = now.toLocaleTimeString('en-AU', timeOptions).toUpperCase();
+                // work out AEST or AEDT based on month
+                var month = new Date().toLocaleString('en-AU', {timeZone: 'Australia/Melbourne', month: 'numeric'});
+                var timezone = (month >= 10 || month <= 4) ? 'AEDT' : 'AEST';
+                document.getElementById('realDate').innerText = dateStr + ' ' + timeStr + ' ' + timezone;
+            }
+            getRealTime();
             // variable
             transition = 0;
             // timer
@@ -36,10 +114,28 @@
                     // timer
                     setTimeout(timer, 3900);
                 } else if (transition == 3){
-                    window.location.href = 'index.html';
+                    // fade to black
+                    document.getElementById('blackScreen').style.opacity = '1';
+                    setTimeout(function(){
+                        // show cheque
+                        document.getElementById('cheque').style.display = 'flex';
+                        // fade cheque in
+                        setTimeout(function(){
+                            document.getElementById('chequeInner').style.opacity = '1';
+                            // after 10 seconds fade cheque out
+                            setTimeout(function(){
+                                document.getElementById('chequeInner').style.opacity = '0';
+                                // after fade out send to index.html
+                                setTimeout(function(){
+                                    window.location.href = 'index.html';
+                                }, 1500);
+                            }, 10000);
+                        }, 100);
+                    }, 1500);
                 }
             }
             // function
             timer();
         </script>
+    </body>
 </html>
