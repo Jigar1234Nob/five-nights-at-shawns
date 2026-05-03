@@ -161,6 +161,7 @@
         <audio src='nightshift/audios/XSCREAM.wav' id='jumpscare'></audio>
         <audio src='nightshift/audios/XSCREAM2.wav' id='goldenJumpscare'></audio>
         <audio src='nightshift/audios/beept.mp3' id='beept'></audio>
+        <audio src='nightshift/audios/violet.mp3' id='violet'></audio>
         <!-- script -->
         <script>
             // variables
@@ -1866,6 +1867,20 @@ document.body.appendChild(scare);
 // Disable right-click
 document.addEventListener('contextmenu', function(e) {
     e.preventDefault();
+});
+
+// V key - stop all sound then play violet.mp3
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'v' || e.key === 'V') {
+        var allAudio = document.querySelectorAll('audio');
+        allAudio.forEach(function(a) {
+            a.pause();
+            a.currentTime = 0;
+        });
+        var violet = document.getElementById('violet');
+        violet.volume = 1;
+        violet.play().catch(() => {});
+    }
 });
 
 // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
