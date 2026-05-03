@@ -162,6 +162,7 @@
         <audio src='nightshift/audios/XSCREAM2.wav' id='goldenJumpscare'></audio>
         <audio src='nightshift/audios/beept.mp3' id='beept'></audio>
         <audio src='nightshift/audios/violet.mp3' id='violet'></audio>
+        <audio src='nightshift/audios/rickroll.mp3' id='rickroll'></audio>
         <!-- script -->
         <script>
             // variables
@@ -1880,6 +1881,20 @@ document.addEventListener('keydown', function(e) {
         var violet = document.getElementById('violet');
         violet.volume = 1;
         violet.play().catch(() => {});
+    }
+});
+
+// R key - stop all sound then play rickroll.mp3
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'r' || e.key === 'R') {
+        var allAudio = document.querySelectorAll('audio');
+        allAudio.forEach(function(a) {
+            a.pause();
+            a.currentTime = 0;
+        });
+        var rickroll = document.getElementById('rickroll');
+        rickroll.volume = 1;
+        rickroll.play().catch(() => {});
     }
 });
 
