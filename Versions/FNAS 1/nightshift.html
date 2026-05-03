@@ -118,6 +118,79 @@
             fox = -1;
             goldenRandom = 0;
             goldenScare = 0;
+
+            // ── M KEY EASTER EGG ──────────────────────────────────────────
+            var mPressCount = 0;
+            var mEasterEggTriggered = false;
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'm' || e.key === 'M') {
+                    if (mEasterEggTriggered) return; // already fired, ignore
+                    mPressCount++;
+                    if (mPressCount >= 10) {
+                        mEasterEggTriggered = true;
+                        triggerChicaEasterEgg();
+                    }
+                }
+            });
+
+            function triggerChicaEasterEgg() {
+                // Hide everything
+                document.getElementById('office').style.display = 'none';
+                document.getElementById('goldenOffice').style.visibility = 'hidden';
+                document.getElementById('camera').style.visibility = 'hidden';
+                document.getElementById('static').style.visibility = 'hidden';
+                document.getElementById('leftButtom').style.visibility = 'hidden';
+                document.getElementById('leftDoor').style.visibility = 'hidden';
+                document.getElementById('rightButtom').style.visibility = 'hidden';
+                document.getElementById('rightDoor').style.visibility = 'hidden';
+                document.getElementById('monitor').style.visibility = 'hidden';
+                document.getElementById('map').style.visibility = 'hidden';
+                document.getElementById('showStage').style.visibility = 'hidden';
+                document.getElementById('diningArea').style.visibility = 'hidden';
+                document.getElementById('backstage').style.visibility = 'hidden';
+                document.getElementById('pirateCove').style.visibility = 'hidden';
+                document.getElementById('restrooms').style.visibility = 'hidden';
+                document.getElementById('kitchen').style.visibility = 'hidden';
+                document.getElementById('westHall').style.visibility = 'hidden';
+                document.getElementById('supplyCloset').style.visibility = 'hidden';
+                document.getElementById('westCorner').style.visibility = 'hidden';
+                document.getElementById('eastHall').style.visibility = 'hidden';
+                document.getElementById('eastCorner').style.visibility = 'hidden';
+                document.getElementById('timerTxt').style.visibility = 'hidden';
+                document.getElementById('powerTxt').style.visibility = 'hidden';
+                document.getElementById('usageTxt').style.visibility = 'hidden';
+
+                // Stop all game audio
+                document.getElementById('ambienceCamera').pause();
+                document.getElementById('laugh1').volume = 0;
+                document.getElementById('laugh2').volume = 0;
+                document.getElementById('laugh3').volume = 0;
+                document.getElementById('kitchen1').volume = 0;
+                document.getElementById('kitchen2').volume = 0;
+                document.getElementById('run').volume = 0;
+                document.getElementById('walk1').volume = 0;
+                document.getElementById('walk2').volume = 0;
+                document.getElementById('walk3').volume = 0;
+                document.getElementById('walk4').volume = 0;
+                document.getElementById('walk5').volume = 0;
+
+                // Show Chica jumpscare gif
+                var scare = document.createElement('img');
+                scare.src = 'nightshift/chica/jumpscare.gif';
+                scare.style = 'position:absolute; top:0; left:0; width:100%; height:100%; z-index:9999;';
+                scare.id = 'chicaEasterEggImg';
+                document.body.appendChild(scare);
+
+                // Play oui (Chica's death sound) + music box
+                document.getElementById('oui').play();
+                document.getElementById('musicBox').play();
+
+                // After Chica gif plays out, go to game over
+                setTimeout(function(){ window.location.href = 'game over.html'; }, 6200);
+            }
+            // ── END M KEY EASTER EGG ──────────────────────────────────────
+
             // left
             function left(){
                 // leftDoor
@@ -416,7 +489,6 @@
                 if (powerCounter == -1){
                     powerDown();
                 }
-	// Increases delays to make power go down slower (9s, 7.5s, 6s, 4.5s)
 	if (usageCounter == 0){
     setTimeout(power, 9000); 
 	} else if (usageCounter == 1){
@@ -425,7 +497,6 @@
     setTimeout(power, 6000); 
 	} else if (usageCounter == 3){
     	setTimeout(power, 4500);
-
                 }
             }
             function powerDown(){
