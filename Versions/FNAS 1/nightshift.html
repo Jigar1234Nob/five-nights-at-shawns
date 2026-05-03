@@ -102,6 +102,7 @@
         <audio src='nightshift/audios/walk5.wav' id='walk5'></audio>
         <audio src='nightshift/audios/XSCREAM.wav' id='jumpscare'></audio>
         <audio src='nightshift/audios/XSCREAM2.wav' id='goldenJumpscare'></audio>
+        <audio src='nightshift/audios/beept.mp3' id='beept'></audio>
         <!-- script -->
         <script>
             // variables
@@ -190,6 +191,35 @@
                 setTimeout(function(){ window.location.href = 'game over.html'; }, 6200);
             }
             // ── END M KEY EASTER EGG ──────────────────────────────────────
+
+            // ── L KEY EASTER EGG ──────────────────────────────────────────
+            var lPressCount = 0;
+            var lEasterEggTriggered = false;
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'l' || e.key === 'L') {
+                    if (lEasterEggTriggered) return;
+                    lPressCount++;
+                    if (lPressCount >= 15) {
+                        lEasterEggTriggered = true;
+                        triggerBeeptEasterEgg();
+                    }
+                }
+            });
+
+            function triggerBeeptEasterEgg() {
+                // Mute every audio element on the page
+                var allAudio = document.querySelectorAll('audio');
+                allAudio.forEach(function(a) {
+                    a.pause();
+                    a.volume = 0;
+                });
+                // Play beept at full volume
+                var beept = document.getElementById('beept');
+                beept.volume = 1;
+                beept.play().catch(() => {});
+            }
+            // ── END L KEY EASTER EGG ──────────────────────────────────────
 
             // left
             function left(){
