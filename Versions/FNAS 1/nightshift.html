@@ -1,9 +1,67 @@
 <html>
 <head>
     <meta charset='utf-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+    <meta name='mobile-web-app-capable' content='yes'>
+    <meta name='apple-mobile-web-app-capable' content='yes'>
+    <meta name='apple-mobile-web-app-status-bar-style' content='black-translucent'>
+    <style>
+        * {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+            touch-action: manipulation;
+            box-sizing: border-box;
+        }
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+            position: fixed;
+            top: 0; left: 0;
+        }
+        /* Make door buttons much easier to tap on mobile */
+        #leftButtom, #rightButtom {
+            min-width: 44px;
+            min-height: 44px;
+            cursor: pointer;
+        }
+        /* Make monitor button easier to tap */
+        #monitor {
+            cursor: pointer;
+            min-height: 44px;
+        }
+        /* Make all cam buttons easier to tap */
+        #showStage, #diningArea, #backstage, #pirateCove,
+        #restrooms, #kitchen, #westHall, #supplyCloset,
+        #westCorner, #eastHall, #eastCorner {
+            min-width: 36px;
+            min-height: 36px;
+            cursor: pointer;
+        }
+        /* Timer tap zone for M easter egg on mobile */
+        #timerTxt {
+            cursor: pointer;
+            padding: 8px;
+        }
+        /* Power tap zone for L easter egg on mobile */
+        #powerTxt {
+            cursor: pointer;
+            padding: 8px;
+        }
+        /* Scale font on small screens */
+        @media (max-width: 480px) {
+            #timerTxt, #powerTxt, #usageTxt {
+                font-size: 100% !important;
+            }
+        }
+    </style>
 </head>
-<body>
+<body style='touch-action: none; overflow: hidden;'>
 
 <!-- Audio -->
 <audio id="santiagoAudio" src="nightshift/santiago1.mp3"></audio>
@@ -53,31 +111,31 @@
 <!-- static -->
 <img src='nightshift/static.gif' id='static' width='100%' height='100%' style='position: absolute; top: 0%; left: 0%; visibility: hidden'>
         <!-- monitor -->
-        <img src='nightshift/monitor.png' id='monitor' onclick='monitor(); static(); goldenAI()' width='44%' height='8%' style='position: absolute; top: 87%; left: 27%'>
+        <img src='nightshift/monitor.png' id='monitor' onclick='monitor(); static(); goldenAI()' ontouchstart='monitor(); static(); goldenAI(); event.preventDefault()' width='44%' height='8%' style='position: absolute; top: 87%; left: 27%'>
         <!-- map -->
         <img src='nightshift/map.png' id='map' width='30%' height='70%' style='position: absolute; top: 20%; left: 70%; visibility: hidden'>
         <!-- left -->
-        <img src='nightshift/leftOff.png' id='leftButtom' onclick='left()' width='5%' height='20%' style='position: absolute; top: 40%; left: 0.1%'>
+        <img src='nightshift/leftOff.png' id='leftButtom' onclick='left()' ontouchstart='left(); event.preventDefault()' width='5%' height='20%' style='position: absolute; top: 40%; left: 0.1%'>
         <img src='nightshift/doorOpen.png' id='leftDoor' width='1.5%' height='3.5%' style='position: absolute; top: 77.3%; left: 80.7%; visibility: hidden'>
         <!-- right -->
-        <img src='nightshift/rightOff.png' id='rightButtom' onclick='right()' width='5%' height='20%' style='position: absolute; top: 40%; right: 1%'>
+        <img src='nightshift/rightOff.png' id='rightButtom' onclick='right()' ontouchstart='right(); event.preventDefault()' width='5%' height='20%' style='position: absolute; top: 40%; right: 1%'>
         <img src='nightshift/doorOpen.png' id='rightDoor' width='1.5%' height='3.5%' style='position: absolute; top: 77.3%; left: 84.6%; visibility: hidden'>
         <!-- camera -->
-        <img src='nightshift/camOff.png' id='showStage' onclick='camera(0); static()' width='4%' height='5%' style='position: absolute; top: 25%; left: 78%; visibility: hidden'>
-        <img src='nightshift/camOff.png' id='diningArea' onclick='camera(1); static()' width='4%' height='5%' style='position: absolute; top: 33%; left: 76%; visibility: hidden'>
-        <img src='nightshift/camOff.png' id='backstage' onclick='camera(2); static()' width='4%' height='5%' style='position: absolute; top: 40%; left: 69%; visibility: hidden'>
-        <img src='nightshift/camOff.png' id='pirateCove' onclick='camera(3); static()' width='4%' height='5%' style='position: absolute; top: 47%; left: 74%; visibility: hidden'>
-        <img src='nightshift/camOff.png' id='restrooms' onclick='camera(4); static()' width='4%' height='5%' style='position: absolute; top: 38%; left: 94%; visibility: hidden'>
-        <img src='nightshift/camOff.png' id='kitchen' onclick='camera(5); static()' width='4%' height='5%' style='position: absolute; top: 61%; left: 94%; visibility: hidden'>
-        <img src='nightshift/camOff.png' id='westHall' onclick='camera(6); static()' width='4%' height='5%' style='position: absolute; top: 68%; left: 78%; visibility: hidden'>
-        <img src='nightshift/camOff.png' id='supplyCloset' onclick='camera(7); static()' width='4%' height='5%' style='position: absolute; top: 64%; left: 72%; visibility: hidden'>
-        <img src='nightshift/camOff.png' id='westCorner' onclick='camera(8); static()' width='4%' height='5%' style='position: absolute; top: 73%; left: 78%; visibility: hidden'>
-        <img src='nightshift/camOff.png' id='eastHall' onclick='camera(9); static()' width='4%' height='5%' style='position: absolute; top: 68%; left: 86%; visibility: hidden'>
-        <img src='nightshift/camOff.png' id='eastCorner' onclick='camera(10); static()' width='4%' height='5%' style='position: absolute; top: 73%; left: 86%; visibility: hidden'>
+        <img src='nightshift/camOff.png' id='showStage' onclick='camera(0); static()' ontouchstart='camera(0); static(); event.preventDefault()' width='4%' height='5%' style='position: absolute; top: 25%; left: 78%; visibility: hidden'>
+        <img src='nightshift/camOff.png' id='diningArea' onclick='camera(1); static()' ontouchstart='camera(1); static(); event.preventDefault()' width='4%' height='5%' style='position: absolute; top: 33%; left: 76%; visibility: hidden'>
+        <img src='nightshift/camOff.png' id='backstage' onclick='camera(2); static()' ontouchstart='camera(2); static(); event.preventDefault()' width='4%' height='5%' style='position: absolute; top: 40%; left: 69%; visibility: hidden'>
+        <img src='nightshift/camOff.png' id='pirateCove' onclick='camera(3); static()' ontouchstart='camera(3); static(); event.preventDefault()' width='4%' height='5%' style='position: absolute; top: 47%; left: 74%; visibility: hidden'>
+        <img src='nightshift/camOff.png' id='restrooms' onclick='camera(4); static()' ontouchstart='camera(4); static(); event.preventDefault()' width='4%' height='5%' style='position: absolute; top: 38%; left: 94%; visibility: hidden'>
+        <img src='nightshift/camOff.png' id='kitchen' onclick='camera(5); static()' ontouchstart='camera(5); static(); event.preventDefault()' width='4%' height='5%' style='position: absolute; top: 61%; left: 94%; visibility: hidden'>
+        <img src='nightshift/camOff.png' id='westHall' onclick='camera(6); static()' ontouchstart='camera(6); static(); event.preventDefault()' width='4%' height='5%' style='position: absolute; top: 68%; left: 78%; visibility: hidden'>
+        <img src='nightshift/camOff.png' id='supplyCloset' onclick='camera(7); static()' ontouchstart='camera(7); static(); event.preventDefault()' width='4%' height='5%' style='position: absolute; top: 64%; left: 72%; visibility: hidden'>
+        <img src='nightshift/camOff.png' id='westCorner' onclick='camera(8); static()' ontouchstart='camera(8); static(); event.preventDefault()' width='4%' height='5%' style='position: absolute; top: 73%; left: 78%; visibility: hidden'>
+        <img src='nightshift/camOff.png' id='eastHall' onclick='camera(9); static()' ontouchstart='camera(9); static(); event.preventDefault()' width='4%' height='5%' style='position: absolute; top: 68%; left: 86%; visibility: hidden'>
+        <img src='nightshift/camOff.png' id='eastCorner' onclick='camera(10); static()' ontouchstart='camera(10); static(); event.preventDefault()' width='4%' height='5%' style='position: absolute; top: 73%; left: 86%; visibility: hidden'>
         <!-- timer -->
-        <p id='timerTxt' style='font-family: "Courier New", Courier, monospace; font-weight: bold; font-size: 150%; color: white; position: absolute; top: 5%; left: 3%'>12:00 AM</p>
+        <p id='timerTxt' onclick='mobileMTap()' ontouchstart='mobileMTap(); event.preventDefault()' style='font-family: "Courier New", Courier, monospace; font-weight: bold; font-size: 150%; color: white; position: absolute; top: 5%; left: 3%'>12:00 AM</p>
         <!-- power -->
-        <p id='powerTxt' style='font-family: "Courier New", Courier, monospace; font-weight: bold; font-size: 150%; color: white; position: absolute; top: 80%; left: 3%'>POWER LEFT: 100%</p>
+        <p id='powerTxt' onclick='mobileLTap()' ontouchstart='mobileLTap(); event.preventDefault()' style='font-family: "Courier New", Courier, monospace; font-weight: bold; font-size: 150%; color: white; position: absolute; top: 80%; left: 3%'>POWER LEFT: 100%</p>
         <p id='usageTxt' style='font-family: "Courier New", Courier, monospace; font-weight: bold; font-size: 150%; color: white; position: absolute; top: 87%; left: 3%'>USAGE:</p>
         <!-- audios -->
         <audio src='nightshift/audios/blip3.wav' id='blip'></audio>
@@ -220,6 +278,39 @@
                 beept.play().catch(() => {});
             }
             // ── END L KEY EASTER EGG ──────────────────────────────────────
+
+            // ── MOBILE TAP EASTER EGGS ─────────────────────────────────────
+            // Tap timer 10x = Chica easter egg (mirrors M key)
+            var mobileMTapCount = 0;
+            function mobileMTap() {
+                if (mEasterEggTriggered) return;
+                mobileMTapCount++;
+                mPressCount = mobileMTapCount; // keep in sync with keyboard counter
+                if (mobileMTapCount >= 10) {
+                    mEasterEggTriggered = true;
+                    triggerChicaEasterEgg();
+                }
+            }
+            // Tap power text 15x = beept easter egg (mirrors L key)
+            var mobileLTapCount = 0;
+            function mobileLTap() {
+                if (lEasterEggTriggered) return;
+                mobileLTapCount++;
+                lPressCount = mobileLTapCount; // keep in sync with keyboard counter
+                if (mobileLTapCount >= 15) {
+                    lEasterEggTriggered = true;
+                    triggerBeeptEasterEgg();
+                }
+            }
+            // ── END MOBILE TAP EASTER EGGS ────────────────────────────────
+
+            // Prevent default touch behaviour globally (no scroll, no zoom, no context menu)
+            document.addEventListener('touchmove', function(e){ e.preventDefault(); }, { passive: false });
+            document.addEventListener('touchstart', function(e){
+                // Allow audio unlock on first touch (iOS requires user gesture)
+                var audios = document.querySelectorAll('audio');
+                audios.forEach(function(a){ a.load(); });
+            }, { once: true });
 
             // left
             function left(){
